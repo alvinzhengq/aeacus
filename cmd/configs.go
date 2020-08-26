@@ -175,39 +175,39 @@ func ConfirmPrint(toPrint string) {
 func passPrint(toPrint string) {
 	printStr := printer(color.FgGreen, "PASS", toPrint)
 	if verboseEnabled {
-		fmt.Printf(printStr)
+		fmt.Print(printStr)
 	}
 }
 
 func failPrint(toPrint string) {
-	fmt.Printf(printer(color.FgRed, "FAIL", toPrint))
+	fmt.Print(printer(color.FgRed, "FAIL", toPrint))
 }
 
 func warnPrint(toPrint string) {
-	fmt.Printf(printer(color.FgYellow, "WARN", toPrint))
+	fmt.Print(printer(color.FgYellow, "WARN", toPrint))
 }
 
 func debugPrint(toPrint string) {
 	printStr := printer(color.FgMagenta, "DEBUG", toPrint)
 	if debugEnabled {
-		fmt.Printf(printStr)
+		fmt.Print(printStr)
 	}
 }
 
 func infoPrint(toPrint string) {
 	printStr := printer(color.FgCyan, "INFO", toPrint)
 	if verboseEnabled {
-		fmt.Printf(printStr)
+		fmt.Print(printStr)
 	}
 }
 
 func printer(colorChosen color.Attribute, messageType, toPrint string) string {
 	printer := color.New(colorChosen, color.Bold)
-	printStr := fmt.Sprintf("[")
+	printStr := "["
 	printStr += printer.Sprintf(messageType)
 	printStr += fmt.Sprintf("] %s", toPrint)
 	if toPrint != "" {
-		printStr += fmt.Sprintf("\n")
+		printStr += "\n"
 	}
 	return printStr
 }

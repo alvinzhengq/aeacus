@@ -77,7 +77,7 @@ func decryptConfig(cipherText string) (string, error) {
 	}
 
 	// Check that decryptedConfig is not empty.
-	decryptedConfig := string(dataBuffer.Bytes())
+	decryptedConfig := dataBuffer.String()
 	if decryptedConfig == "" {
 		return "", errors.New("decrypted config is empty")
 	}

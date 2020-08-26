@@ -277,7 +277,10 @@ func fileEquals(fileName, fileHash string) (bool, error) {
 		return false, err
 	}
 	hasher := sha1.New()
-	hasher.Write([]byte(fileContent))
+	_, err2 := hasher.Write([]byte(fileContent))
+	if err2 != nil {
+		return false, err
+	}
 	hash := hex.EncodeToString(hasher.Sum(nil))
 	return hash == fileHash, err
 }

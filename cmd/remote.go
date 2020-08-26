@@ -19,8 +19,7 @@ import (
 )
 
 var (
-	delimiter      = "|-S#-|"
-	debugDelimiter = "|-D#-|"
+	delimiter = "|-S#-|"
 )
 
 func readTeamID() {
@@ -50,7 +49,10 @@ func genChallenge() string {
 	randomHash2 := "e31ad5a009753ef6da499f961edf0ab3a8eb6e5f"
 	chalString := hexEncode(xor(randomHash1, randomHash2))
 	hasher := sha256.New()
-	hasher.Write([]byte(mc.Config.Password))
+	_, err := hasher.Write([]byte(mc.Config.Password))
+	if err != nil {
+		return "ERROR HASHING PASSWORD"
+	}
 	key := hexEncode(string(hasher.Sum(nil)))
 	return hexEncode(xor(key, chalString))
 }
@@ -189,7 +191,7 @@ func checkServer() {
 		sendNotification("Score upload failure! Unable to access remote server.")
 		mc.Connection = false
 	} else if mc.Conn.ServerStatus == "ERROR" {
-		timeWithoutId = time.Now().Sub(timeStart)
+		timeWithoutId = time.Since(timeStart)
 		if !mc.Config.NoDestroy && timeWithoutId > withoutIdThreshold {
 			failPrint("Destroying the image! Too long without inputting valid ID.")
 			// destroyImage()
@@ -233,7 +235,10 @@ func handleStatus(status string) {
 func encryptString(password, plainText string) string {
 	// Create a sha256sum hash of the password provided.
 	hasher := sha256.New()
-	hasher.Write([]byte(password))
+	_, err := hasher.Write([]byte(password))
+	if err != nil {
+		return "ERROR HASHING PASSWORD"
+	}
 	key := hasher.Sum(nil)
 
 	// Pad plainText to be a 16-byte block.
